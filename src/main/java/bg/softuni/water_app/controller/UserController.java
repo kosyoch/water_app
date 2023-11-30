@@ -1,7 +1,5 @@
 package bg.softuni.water_app.controller;
 
-import bg.softuni.water_app.model.dto.user.UserLoginBindingModel;
-import bg.softuni.water_app.model.dto.user.UserRegisterBindingModel;
 import bg.softuni.water_app.service.UserService;
 import bg.softuni.water_app.service.impl.LoggedUser;
 import jakarta.validation.Valid;
@@ -22,45 +20,10 @@ public class UserController {
         this.userService = userService;
         this.loggedUser = loggedUser;
     }
-    @GetMapping("/login")
-    public ModelAndView login(@ModelAttribute("userLoginBindingModel")UserLoginBindingModel userLoginBindingModel){
-        if(loggedUser.isLogged()){
-            return new ModelAndView("redirect:/home");
-        }
-        return new ModelAndView("login");
-
-    }
-    @PostMapping("/login")
-    public ModelAndView login(
-            @ModelAttribute("userLoginBindingModel") @Valid UserLoginBindingModel userLoginBindingModel,
-            BindingResult bindingResult) {
-        if (loggedUser.isLogged()) {
-            return new ModelAndView("redirect:/home");
-        }
-
-        if (bindingResult.hasErrors()) {
-            return new ModelAndView("login");
-        }
-
-        boolean hasSuccessfulLogin = userService.login(userLoginBindingModel);
-
-        if (!hasSuccessfulLogin) {
-            ModelAndView modelAndView = new ModelAndView("login");
-            modelAndView.addObject("hasLoginError", true);
-            return modelAndView;
-        }
-
-        return new ModelAndView("redirect:/home");
-    }
 
     @GetMapping("/register")
-    public ModelAndView register(
-            @ModelAttribute("userRegisterBindingModel") UserRegisterBindingModel userRegisterBindingModel) {
-        if (loggedUser.isLogged()) {
-            return new ModelAndView("redirect:/home");
-        }
-
-        return new ModelAndView("register");
+    public String register(){
+        return "register";
     }
 
     @PostMapping("/register")
@@ -85,4 +48,10 @@ public class UserController {
 
         return new ModelAndView("redirect:/login");
     }
+    @GetMapping("/login")
+    public String login(){
+        return "login";
+    }
+
+
 }

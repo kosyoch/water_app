@@ -18,12 +18,18 @@ public class Game extends BaseEntity {
     @Positive
     private BigDecimal price;
 
-    private String requirements;
-
     @ManyToOne
-    private Developer developer;
+    private User developer;
     @ManyToOne
     private Category category;
+
+    public Category getCategory() {
+        return category;
+    }
+
+    public void setCategory(Category category) {
+        this.category = category;
+    }
 
     public String getTitle() {
         return title;
@@ -57,19 +63,11 @@ public class Game extends BaseEntity {
         this.price = price;
     }
 
-    public String getRequirements() {
-        return requirements;
-    }
-
-    public void setRequirements(String requirements) {
-        this.requirements = requirements;
-    }
-
-    public Developer getDeveloper() {
+    public User getDeveloper() {
         return developer;
     }
 
-    public void setDeveloper(Developer developer) {
+    public void setDeveloper(User developer) {
         this.developer = developer;
     }
 }

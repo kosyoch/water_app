@@ -1,21 +1,15 @@
-package bg.softuni.water_app.model.entity;
+package bg.softuni.water_app.model.dto.review;
 
-import jakarta.persistence.*;
+import jakarta.validation.constraints.PastOrPresent;
 import jakarta.validation.constraints.Size;
 
 import java.sql.Date;
 
-
-@Entity
-@Table
-public class Review extends BaseEntity{
-    @Column(name = "review_text")
-    @Size(max = 200)
+public class ReviewAddBindingModel {
+    @Size(max = 500, message = "Review cannot be more than 500 characters!")
     private String reviewText;
-    @Column(name = "date_created")
+    @PastOrPresent(message = "Date must be in the past or present!")
     private Date dateCreated;
-    @ManyToOne
-    private User reviewWriter;
 
     public String getReviewText() {
         return reviewText;
@@ -31,13 +25,5 @@ public class Review extends BaseEntity{
 
     public void setDateCreated(Date dateCreated) {
         this.dateCreated = dateCreated;
-    }
-
-    public User getReviewWriter() {
-        return reviewWriter;
-    }
-
-    public void setReviewWriter(User reviewWriter) {
-        this.reviewWriter = reviewWriter;
     }
 }
