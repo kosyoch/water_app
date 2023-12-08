@@ -1,37 +1,41 @@
 <!DOCTYPE html>
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Dictionary App</title>
-    <link rel="stylesheet" href="/css/reset-css.css"/>
-    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <title>Water</title>
+<!--    <link rel="stylesheet" href="/css/reset-css.css"/>-->
+<!--    <link rel="stylesheet" href="/css/bootstrap.min.css"/>-->
     <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-expand-lg bg-nav rounded " >
-        <a class="nav-link my-text-color active h5 " href="/static">Water</a>
-<!--        <a th:if="${@loggedUser.isLogged()}"class="nav-link my-text-color active h5  " th:href="@{/words/add}">Add Word</a>-->
+    <nav class="navbar navbar-expand-lg bg-nav rounded ">
+        <span class="nav-link my-text-color active h5 ">Water</span>
+        <a sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')" class="nav-link my-text-color active h5  " th:href="@{/wallet/add}">Add Funds</a>
 
         <div class="collapse navbar-collapse d-flex justify-content-end" id="navbarNav">
             <ul class="navbar-nav row">
-                <li th:unless="${@loggedUser.isLogged()}" class="nav-item col-md-4">
+                <li sec:authorize="!isAuthenticated()" class="nav-item col-md-4">
                     <a class="nav-link active h5 my-text-color" th:href="@{/login}">Login</a>
                 </li>
 
-                <li th:unless="${@loggedUser.isLogged()}" class="nav-item col-md-4">
+                <li sec:authorize="!isAuthenticated()" class="nav-item col-md-4">
                     <a class="nav-link my-text-color active h5 " th:href="@{/register}">Register</a>
                 </li>
 
-                <a th:if="${@loggedUser.isLogged()}" class="nav-link my-text-color active h5" th:text="'Welcome, ' + ${@loggedUser.username}"></a>
-                <li th:if="${@loggedUser.isLogged}" class="nav-item col-md-4">
-                    <form th:action="@{/logout}" method="post">
-                        <button type="submit" class="nav-link my-text-color active h5 " th:href="@{/logout}">
-                            Logout
-                        </button>
-                    </form>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <div class="form-inline my-2 my-lg-0 border px-3">
+                        <div class="logged-user">
+                            Welcome, <th:block sec:authentication="name"></th:block>!
+                        </div>
+                        <form th:method="post"
+                              th:action="@{/logout}">
+                            <input type="submit" class="btn btn-link" value="Logout"/>
+                        </form>
+                    </div>
                 </li>
             </ul>
         </div>

@@ -3,11 +3,14 @@ package bg.softuni.water_app.service.impl;
 import bg.softuni.water_app.model.dto.game.GameAddBindingModel;
 import bg.softuni.water_app.model.entity.Category;
 import bg.softuni.water_app.model.entity.Game;
-import bg.softuni.water_app.repo.CategoryRepository;
-import bg.softuni.water_app.repo.GameRepository;;
+import bg.softuni.water_app.model.entity.User;
+import bg.softuni.water_app.repo.*;
+;
 import bg.softuni.water_app.service.GameService;
-import bg.softuni.water_app.service.UserService;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class GameServiceImpl implements GameService {
@@ -15,34 +18,61 @@ public class GameServiceImpl implements GameService {
 
     private final CategoryRepository categoryRepository;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public GameServiceImpl(GameRepository gameRepository, CategoryRepository categoryRepository, UserService userService) {
+    private final GameKeyRepository gameKeyRepository;
+
+    private final ReviewRepository reviewRepository;
+
+
+
+    public GameServiceImpl(GameRepository gameRepository, CategoryRepository categoryRepository, UserRepository userRepository, GameKeyRepository gameKeyRepository, ReviewRepository reviewRepository) {
         this.gameRepository = gameRepository;
         this.categoryRepository = categoryRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
+        this.gameKeyRepository = gameKeyRepository;
+        this.reviewRepository = reviewRepository;
     }
 
 
     @Override
-    public void add(GameAddBindingModel gameAddBindingModel) {
+    public void add(GameAddBindingModel gameAddBindingModel, String username) {
         Category category = categoryRepository.findByName(gameAddBindingModel.getCategory());
 
         if(category != null){
             Game game = new Game();
             game.setTitle(gameAddBindingModel.getTitle());
             game.setDescription(gameAddBindingModel.getDescription());
-            game.setReleaseDate(gameAddBindingModel.getReleaseDate());
             game.setPrice(gameAddBindingModel.getPrice());
             game.setCategory(category);
-            game.setDeveloper(userService.getLoggedUser());
+            game.setDeveloper(userRepository.findByUsername(username));
 
             gameRepository.save(game);
+
         }
     }
 
     @Override
-    public void remove(Long id) {
+    public void remove(Game game) {
+        Long id = game.getId();
+        gameKeyRepository.deleteAll(gameKeyRepository.findAllByGame_Id(id));
+        reviewRepository.deleteAll(reviewRepository.findAllByReviewedGame_Id(id));
         gameRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Game> getMyCreatedGames(String username) {
+        User developer = userRepository.findByUsername(username);
+        return gameRepository.findAllByDeveloper(developer);
+    }
+
+    @Override
+    public Optional<Game> getGameById(Long id) {
+        return Optional.ofNullable(gameRepository.findGameById(id));
+    }
+
+    @Override
+    public List<Game> getGamesByCategory(Category category) {
+        return gameRepository.findAllByCategory(category);
     }
 }

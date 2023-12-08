@@ -1,8 +1,9 @@
 package bg.softuni.water_app.config;
 
-import bg.softuni.water_app.model.entity.enums.UserRoles;
+import bg.softuni.water_app.model.entity.enums.UserRole;
 import bg.softuni.water_app.repo.UserRepository;
 import bg.softuni.water_app.service.impl.WaterUserDetailsService;
+
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,28 +17,29 @@ import org.springframework.security.web.SecurityFilterChain;
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain (HttpSecurity httpSecurity) throws Exception {
-      return  httpSecurity.authorizeHttpRequests(
-                authorizeRequests -> authorizeRequests
-                        .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
-                        .requestMatchers("/", "/login", "/register").permitAll()
-                        .requestMatchers("/games/add").hasRole(UserRoles.DEVELOPER.name())
-        ).formLogin(
-                formLogin -> {
-                    formLogin
-                            .loginPage("/login")
-                            .usernameParameter("username")
-                            .passwordParameter("password")
-                            .defaultSuccessUrl("/")
-                            .failureForwardUrl("/");
-                }
-        ).logout(
-                logout -> {
-                    logout
-                            .logoutUrl("/logout")
-                            .logoutSuccessUrl("/")
-                            .invalidateHttpSession(true);
-                }
-              ).build();
+      return httpSecurity
+              .authorizeHttpRequests()
+                .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
+                .requestMatchers("/", "/login", "/register", "/login-error").permitAll()
+                .requestMatchers("/games/add").hasRole(UserRole.DEVELOPER.name())
+                .requestMatchers("/reviews/add/game{id}", "/games/buy{id}","/wallet/add" ).hasRole(UserRole.CUSTOMER.name())
+                .requestMatchers( "/reviews/remove{id}","/games/remove{id}").hasRole(UserRole.ADMIN.name())
+                .anyRequest()
+                .authenticated()
+              .and()
+                .formLogin()
+                .loginPage("/login")
+                .usernameParameter("username")
+                .passwordParameter("password")
+                .defaultSuccessUrl("/home", true)
+                .failureForwardUrl("/login-error")
+              .and()
+              .logout()
+                .logoutUrl("/logout")
+                .logoutSuccessUrl("/")
+                .invalidateHttpSession(true)
+              .and()
+              .build();
     }
     @Bean
     public UserDetailsService userDetailsService(UserRepository userRepository){

@@ -37,20 +37,10 @@
             <div class="label-holder text-white textCol d-flex justify-content-center">
                 <label for="price" class="h4 mb-2">Price</label>
             </div>
-            <textarea type="" class="form-control" id="price" th:field="*{price}"
-                      th:errorclass="bg-danger"></textarea>
+            <input type="number"  min="0" max="10000" step="any" class="form-control" id="price" th:field="*{price}"
+                      th:errorclass="bg-danger"/>
             <small th:if="${#fields.hasErrors('price')}"
                    th:errors="*{price} " class="text-danger">Price error message</small>
-        </div>
-
-        <div class="form-group">
-            <div class="label-holder text-white textCol d-flex justify-content-center">
-                <label for="releaseDate" class="h4 mb-2">Set release date</label>
-            </div>
-            <input type="date" class="form-control" id="releaseDate" th:field="*{releaseDate}"
-                   th:errorclass="bg-danger"/>
-            <small th:if="${#fields.hasErrors('releaseDate')}"
-                   th:errors="*{releaseDate}" class="text-danger">Release Date error message</small>
         </div>
 
         <div class="form-group">

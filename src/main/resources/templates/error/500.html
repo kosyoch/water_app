@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+  <div class="container-fluid">
+    <h5 class="text-center text-white mt-5">Something has gone very wrong!</h5>
+    <h5 class="text-center text-white mt-5">We are sorry and are working to resolve this issue as soon as possible!</h5>
+    <a th:href="@{/home}" class="btn btn-danger" th:text="'Back to home'"></a>
+  </div>
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

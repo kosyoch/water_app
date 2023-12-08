@@ -2,20 +2,24 @@ package bg.softuni.water_app.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.sql.Date;
+import java.time.LocalDate;
 
 
 @Entity
 @Table
 public class Review extends BaseEntity{
     @Column(name = "review_text")
-    @Size(max = 200)
     private String reviewText;
     @Column(name = "date_created")
-    private Date dateCreated;
+    private LocalDate dateCreated;
     @ManyToOne
     private User reviewWriter;
+    @ManyToOne
+    @JoinColumn(name = "game-id")
+    private Game reviewedGame;
 
     public String getReviewText() {
         return reviewText;
@@ -25,11 +29,11 @@ public class Review extends BaseEntity{
         this.reviewText = reviewText;
     }
 
-    public Date getDateCreated() {
+    public LocalDate getDateCreated() {
         return dateCreated;
     }
 
-    public void setDateCreated(Date dateCreated) {
+    public void setDateCreated(LocalDate dateCreated) {
         this.dateCreated = dateCreated;
     }
 
@@ -39,5 +43,13 @@ public class Review extends BaseEntity{
 
     public void setReviewWriter(User reviewWriter) {
         this.reviewWriter = reviewWriter;
+    }
+
+    public Game getReviewedGame() {
+        return reviewedGame;
+    }
+
+    public void setReviewedGame(Game reviewedGame) {
+        this.reviewedGame = reviewedGame;
     }
 }

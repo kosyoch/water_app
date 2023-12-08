@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+
+<!--  <div class="container bg-blur rounded mt-3 mb-4">-->
+    <h1 th:text="*{game.title}"></h1>
+<!--    <div class="row mt-3 mb-3">-->
+
+      <div class="col-5 bg-dark rounded m-auto" style="height: 30vh; overflow: auto">
+        <span th:text="|Description: *{game.getDescription()}|" ></span>
+        <br>
+        <span th:text="|Developer: *{game.getDeveloper().username}|" ></span>
+        <br>
+        <span th:text="|Price: *{game.getPrice()} leva|" ></span>
+        <br>
+        <a th:href="@{/reviews/game{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Reviews'"></a>
+        <a sec:authorize="hasAnyRole('ADMIN')" th:href="@{/games/remove{id}(id = *{game.id})}" class="btn btn-danger" th:text="'Remove game'"></a>
+        <a sec:authorize="hasAnyRole('CUSTOMER')" th:href="@{/games/buy{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Buy Game'"></a>
+        </div>
+      </div>
+    </div>
+    <a sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')" th:href="@{/category{id}(id = *{game.getCategory().getId()})}" class="btn btn-danger" th:text="'Back to category'"></a>
+    <a th:href="@{/home}" class="btn btn-danger" th:text="'Back to home'"></a>
+  </div>
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

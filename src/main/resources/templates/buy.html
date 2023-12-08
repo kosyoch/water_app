@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="~{fragments/commons::head}"></head>
+<body>
+<header th:replace="~{fragments/commons::nav}"></header>
+<main>
+
+<!--  <div class="container bg-blur rounded mt-3 mb-4">-->
+    <h1>Confirm purchase</h1>
+<!--    <div class="row mt-3 mb-3">-->
+
+<!--      <div class="col-5 bg-dark rounded m-auto" style="height: 30vh; overflow: auto">-->
+        <span th:text="|Title: *{game.getTitle()}|" ></span>
+        <br>
+        <span th:text="|Price: *{game.getPrice()} leva|" ></span>
+        <br>
+        <span th:text="|Your wallet: *{currentWallet} leva|" ></span>
+        <br>
+        <span th:text="|Remaining funds after purchase: *{currentWallet - game.getPrice()} leva|" ></span>
+        <br>
+        <span th:if="${canBuyGame == false}" th:text="'Insufficient funds in wallet!'" ></span>
+<!--      </div>-->
+<!--    </div>-->
+  <a th:if="${canBuyGame == false}" th:href="@{/games/{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Back to game'"></a>
+    <a th:if="${canBuyGame == true}" th:href="@{/games/buy/finalize{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Finalize purchase'"></a>
+  <a th:href="@{/home}" class="btn btn-danger" th:text="'Back to home'"></a>
+<!--  </div>-->
+</main>
+<footer th:replace="~{fragments/commons::footer}"></footer>
+</body>
+</html>

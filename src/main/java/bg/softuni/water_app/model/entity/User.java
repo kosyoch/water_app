@@ -1,35 +1,44 @@
 package bg.softuni.water_app.model.entity;
 
+import bg.softuni.water_app.model.entity.enums.UserRole;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.Size;
 import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
+import java.math.BigDecimal;
 import java.util.Collection;
+import java.util.Collections;
+
 
 @Entity
 @Table
-public class User  extends org.springframework.security.core.userdetails.User {
+public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "usernames", nullable = false, unique = true)
-    @Size(min = 3, max = 20)
     private String username;
-    @Column(nullable = false, unique = false)
-    @Email
+
+    @Column(nullable = false, unique = true)
+
     private String email;
+
     @Column(nullable = false)
     private String password;
 
-    public User(String username, String password, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
+    @Transient
+    private String confirmPassword;
+
+    private BigDecimal wallet;
+
+    public User() {
     }
 
-    public User(String username, String password, boolean enabled, boolean accountNonExpired, boolean credentialsNonExpired, boolean accountNonLocked, Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, enabled, accountNonExpired, credentialsNonExpired, accountNonLocked, authorities);
-    }
+    // region getters
     public Long getId() {
         return id;
     }
@@ -41,6 +50,7 @@ public class User  extends org.springframework.security.core.userdetails.User {
     public String getUsername() {
         return username;
     }
+
 
     public void setUsername(String username) {
         this.username = username;
@@ -61,4 +71,66 @@ public class User  extends org.springframework.security.core.userdetails.User {
     public void setPassword(String password) {
         this.password = password;
     }
+
+    public String getConfirmPassword() {
+        return confirmPassword;
+    }
+
+    public void setConfirmPassword(String confirmPassword) {
+        this.confirmPassword = confirmPassword;
+    }
+
+    public UserRole getRole() {
+        return role;
+    }
+
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+
+    public BigDecimal getWallet() {
+        return wallet;
+    }
+
+    public void setWallet(BigDecimal wallet) {
+        this.wallet = wallet;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return Collections.singleton(role);
+    }
+
+    /**
+     * Our application will not use this spring security functionality at the moment.
+     */
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    /**
+     * Our application will not use this spring security functionality at the moment.
+     */
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    /**
+     * Our application will not use this spring security functionality at the moment.
+     */
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    /**
+     * Our application will not use this spring security functionality at the moment.
+     */
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+    // endregion
 }

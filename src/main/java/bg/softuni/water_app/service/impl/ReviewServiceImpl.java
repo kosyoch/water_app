@@ -1,33 +1,58 @@
 package bg.softuni.water_app.service.impl;
 
 import bg.softuni.water_app.model.dto.review.ReviewAddBindingModel;
+import bg.softuni.water_app.model.entity.Game;
 import bg.softuni.water_app.model.entity.Review;
+import bg.softuni.water_app.repo.GameRepository;
 import bg.softuni.water_app.repo.ReviewRepository;
+import bg.softuni.water_app.repo.UserRepository;
 import bg.softuni.water_app.service.ReviewService;
-import bg.softuni.water_app.service.UserService;
 import org.springframework.stereotype.Service;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
     private final ReviewRepository reviewRepository;
 
-    private final UserService userService;
+    private final UserRepository userRepository;
 
-    public ReviewServiceImpl(ReviewRepository reviewRepository, UserService userService) {
+    private final GameRepository gameRepository;
+
+    public ReviewServiceImpl(ReviewRepository reviewRepository, UserRepository userRepository, GameRepository gameRepository) {
         this.reviewRepository = reviewRepository;
-        this.userService = userService;
+        this.userRepository = userRepository;
+        this.gameRepository = gameRepository;
     }
 
     @Override
-    public void add(ReviewAddBindingModel reviewAddBindingModel) {
+    public void add(ReviewAddBindingModel reviewAddBindingModel, String username, Long gameId) {
         Review review = new Review();
         review.setReviewText(reviewAddBindingModel.getReviewText());
-        review.setDateCreated(reviewAddBindingModel.getDateCreated());
-        review.setReviewWriter(userService.getLoggedUser());
+        review.setDateCreated(LocalDate.now());
+        review.setReviewWriter(userRepository.findByUsername(username));
+        review.setReviewedGame(gameRepository.findGameById(gameId));
+        reviewRepository.save(review);
     }
 
     @Override
     public void remove(Long id) {
         reviewRepository.deleteById(id);
+    }
+
+    @Override
+    public List<Review> getAllReviewsByGame(Game game) {
+        return reviewRepository.findAllByReviewedGame(game);
+    }
+
+    @Override
+    public void removeOldReviews() {
+        List<Review> reviewsToRemove = reviewRepository.findAllByDateCreatedBefore(LocalDate.now().minusMonths(6));
+
+        if(reviewsToRemove.size() > 0){
+            reviewRepository.deleteAll(reviewsToRemove);
+            reviewsToRemove.clear();
+        }
     }
 }

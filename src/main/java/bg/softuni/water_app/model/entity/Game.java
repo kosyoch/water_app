@@ -2,9 +2,11 @@ package bg.softuni.water_app.model.entity;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Positive;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
 import java.sql.Date;
+import java.util.List;
 
 @Entity
 @Table
@@ -13,8 +15,6 @@ public class Game extends BaseEntity {
     private String title;
 
     private String description;
-    @Column(nullable = false, name = "release_dates")
-    private Date releaseDate;
     @Positive
     private BigDecimal price;
 
@@ -45,14 +45,6 @@ public class Game extends BaseEntity {
 
     public void setDescription(String description) {
         this.description = description;
-    }
-
-    public Date getReleaseDate() {
-        return releaseDate;
-    }
-
-    public void setReleaseDate(Date releaseDate) {
-        this.releaseDate = releaseDate;
     }
 
     public BigDecimal getPrice() {
