@@ -24,21 +24,29 @@ public class ReviewController {
 
     private final GameService gameService;
 
-
-    private Long gameId;
-
     public ReviewController(ReviewService reviewService, GameService gameService) {
         this.reviewService = reviewService;
         this.gameService = gameService;
     }
 
-    @GetMapping("/add/game{id}")
-    public ModelAndView add(@ModelAttribute("reviewAddBindingModel")ReviewAddBindingModel reviewAddBindingModel,@PathVariable("id") Long id){
-        this.gameId = id;
+    @GetMapping("")
+    public String reviewsPage(@RequestParam() Long gameId, Model model){
+        Game game = gameService.getGameById(gameId)
+                .orElseThrow(() -> new ObjectNotFoundException("Game with id " + gameId + " not found!"));
+        List<Review> reviews = reviewService.getAllReviewsByGame(game);
+        model.addAttribute("reviews", reviews) ;
+        model.addAttribute("game", game);
+        return "review";
+    }
+
+    @GetMapping("/add")
+    public ModelAndView showAddReviewPage(@ModelAttribute("reviewAddBindingModel") ReviewAddBindingModel reviewAddBindingModel,
+                                          @RequestParam() Long gameId){
+        reviewAddBindingModel.setGameId(gameId);
         return new ModelAndView("review-add");
     }
 
-    @PostMapping("/add/game{id}")
+    @PostMapping("/add")
     public ModelAndView add(@AuthenticationPrincipal User user,
             @ModelAttribute("reviewAddBindingModel") @Valid ReviewAddBindingModel reviewAddBindingModel,
             BindingResult bindingResult){
@@ -46,23 +54,14 @@ public class ReviewController {
         if(bindingResult.hasErrors()){
             return new ModelAndView("review-add");
         }
-        reviewService.add(reviewAddBindingModel, username, gameId);
+        reviewService.add(reviewAddBindingModel, username);
         return new ModelAndView("redirect:/home");
 
     }
-    @GetMapping("/remove{id}")
+    @GetMapping("/{id}/remove")
     public ModelAndView remove (@PathVariable("id") Long id){
         reviewService.remove(id);
         return new ModelAndView("redirect:/home");
-    }
-
-    @GetMapping("/game{id}")
-    public String reviewsPage(@PathVariable("id") Long id, Model model){
-        Game game = gameService.getGameById(id).orElseThrow(() -> new ObjectNotFoundException("Game with id " + id + " not found!"));
-        List<Review> reviews = reviewService.getAllReviewsByGame(game);
-        model.addAttribute("reviews", reviews) ;
-        model.addAttribute("game", game);
-        return "review";
     }
 
 

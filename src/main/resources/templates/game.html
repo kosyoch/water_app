@@ -18,13 +18,13 @@
         <br>
         <span th:text="|Price: *{game.getPrice()} leva|" ></span>
         <br>
-        <a th:href="@{/reviews/game{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Reviews'"></a>
-        <a sec:authorize="hasAnyRole('ADMIN')" th:href="@{/games/remove{id}(id = *{game.id})}" class="btn btn-danger" th:text="'Remove game'"></a>
-        <a sec:authorize="hasAnyRole('CUSTOMER')" th:href="@{/games/buy{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Buy Game'"></a>
+        <a th:href="@{/reviews(gameId = *{game.getId()})}" class="btn btn-danger" th:text="'Reviews'"></a>
+        <a sec:authorize="hasAnyRole('ADMIN')" th:href="@{/games/{id}/remove(id = *{game.id})}" class="btn btn-danger" th:text="'Remove game'"></a>
+        <a sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')" th:href="@{/game-keys/buy(gameId = *{game.getId()})}" class="btn btn-danger" th:text="'Buy Game'"></a>
         </div>
       </div>
     </div>
-    <a sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')" th:href="@{/category{id}(id = *{game.getCategory().getId()})}" class="btn btn-danger" th:text="'Back to category'"></a>
+    <a sec:authorize="hasAnyRole('CUSTOMER', 'ADMIN')" th:href="@{/categories/{id}(id = *{game.getCategory().getId()})}" class="btn btn-danger" th:text="'Back to category'"></a>
     <a th:href="@{/home}" class="btn btn-danger" th:text="'Back to home'"></a>
   </div>
 </main>

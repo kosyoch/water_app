@@ -2,7 +2,7 @@ package bg.softuni.water_app.service.impl;
 
 import bg.softuni.water_app.model.entity.User;
 import bg.softuni.water_app.model.entity.enums.UserRole;
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

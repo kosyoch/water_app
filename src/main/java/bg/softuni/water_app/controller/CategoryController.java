@@ -8,8 +8,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
+@RequestMapping("/categories")
 public class CategoryController {
     private final CategoryService categoryService;
 
@@ -20,8 +22,8 @@ public class CategoryController {
         this.gameService = gameService;
     }
 
-    @GetMapping("/category{id}")
-    public String category(@PathVariable Long id, Model model){
+    @GetMapping("/{id}")
+    public String showCategory(@PathVariable Long id, Model model){
         Category category = categoryService.getCategoryToDisplay(id).orElseThrow(() -> new ObjectNotFoundException("Category with id " + id + " not found!"));
         model.addAttribute("category", category);
         model.addAttribute("games", gameService.getGamesByCategory(category));

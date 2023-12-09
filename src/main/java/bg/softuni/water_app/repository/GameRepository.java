@@ -1,4 +1,4 @@
-package bg.softuni.water_app.repo;
+package bg.softuni.water_app.repository;
 
 import bg.softuni.water_app.model.entity.Category;
 import bg.softuni.water_app.model.entity.Game;

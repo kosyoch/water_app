@@ -1,7 +1,7 @@
 package bg.softuni.water_app.config;
 
 import bg.softuni.water_app.model.entity.enums.UserRole;
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import bg.softuni.water_app.service.impl.WaterUserDetailsService;
 
 import org.springframework.boot.autoconfigure.security.servlet.PathRequest;
@@ -21,9 +21,9 @@ public class SecurityConfig {
               .authorizeHttpRequests()
                 .requestMatchers(PathRequest.toStaticResources().atCommonLocations()).permitAll()
                 .requestMatchers("/", "/login", "/register", "/login-error").permitAll()
-                .requestMatchers("/games/add").hasRole(UserRole.DEVELOPER.name())
-                .requestMatchers("/reviews/add/game{id}", "/games/buy{id}","/wallet/add" ).hasRole(UserRole.CUSTOMER.name())
-                .requestMatchers( "/reviews/remove{id}","/games/remove{id}").hasRole(UserRole.ADMIN.name())
+                .requestMatchers("/games/add").hasAnyRole(UserRole.DEVELOPER.name(), UserRole.ADMIN.name())
+                .requestMatchers("/reviews/add", "/game-keys/buy","/wallet/add" ).hasAnyRole(UserRole.CUSTOMER.name(), UserRole.ADMIN.name())
+                .requestMatchers( "/reviews/{id}/remove","/games/{id}/remove").hasRole(UserRole.ADMIN.name())
                 .anyRequest()
                 .authenticated()
               .and()

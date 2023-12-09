@@ -4,7 +4,7 @@ import bg.softuni.water_app.model.dto.game.GameAddBindingModel;
 import bg.softuni.water_app.model.entity.Category;
 import bg.softuni.water_app.model.entity.Game;
 import bg.softuni.water_app.model.entity.User;
-import bg.softuni.water_app.repo.*;
+import bg.softuni.water_app.repository.*;
 ;
 import bg.softuni.water_app.service.GameService;
 import org.springframework.stereotype.Service;
@@ -20,18 +20,11 @@ public class GameServiceImpl implements GameService {
 
     private final UserRepository userRepository;
 
-    private final GameKeyRepository gameKeyRepository;
 
-    private final ReviewRepository reviewRepository;
-
-
-
-    public GameServiceImpl(GameRepository gameRepository, CategoryRepository categoryRepository, UserRepository userRepository, GameKeyRepository gameKeyRepository, ReviewRepository reviewRepository) {
+    public GameServiceImpl(GameRepository gameRepository, CategoryRepository categoryRepository, UserRepository userRepository) {
         this.gameRepository = gameRepository;
         this.categoryRepository = categoryRepository;
         this.userRepository = userRepository;
-        this.gameKeyRepository = gameKeyRepository;
-        this.reviewRepository = reviewRepository;
     }
 
 
@@ -54,10 +47,7 @@ public class GameServiceImpl implements GameService {
 
     @Override
     public void remove(Game game) {
-        Long id = game.getId();
-        gameKeyRepository.deleteAll(gameKeyRepository.findAllByGame_Id(id));
-        reviewRepository.deleteAll(reviewRepository.findAllByReviewedGame_Id(id));
-        gameRepository.deleteById(id);
+        gameRepository.deleteById(game.getId());
     }
 
     @Override

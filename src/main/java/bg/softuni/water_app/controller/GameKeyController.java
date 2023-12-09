@@ -11,9 +11,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping("/game-keys")
 public class GameKeyController {
     private final GameKeyService gameKeyService;
     private final GameService gameService;
@@ -26,24 +29,25 @@ public class GameKeyController {
         this.userService = userService;
     }
 
-    @GetMapping("/games/buy{id}")
-    public String buy (@PathVariable("id") Long id, @AuthenticationPrincipal User user, Model model){
+    @GetMapping("/buy")
+    public String buy(@RequestParam() Long gameId, @AuthenticationPrincipal User user, Model model) {
         String username = user.getUsername();
-        Game game = gameService.getGameById(id).orElseThrow(() -> new ObjectNotFoundException("Game with id " + id + " not found!"));
-        boolean canBuyGame = user.getWallet().compareTo(game.getPrice()) != -1;
+        Game game = gameService.getGameById(gameId)
+                .orElseThrow(() -> new ObjectNotFoundException("Game with id " + gameId + " not found!"));
+        boolean canBuyGame = userService.getCurrentWallet(username).compareTo(game.getPrice()) >= 0;
         model.addAttribute("game", game);
         model.addAttribute("canBuyGame", canBuyGame);
         model.addAttribute("currentWallet", userService.getCurrentWallet(username));
         return ("buy");
     }
-    @GetMapping("/games/buy/finalize{id}")
-    public ModelAndView finalizePurchase(@PathVariable("id") Long id, @AuthenticationPrincipal User user){
+
+    @GetMapping("/finalize")
+    public ModelAndView finalizePurchase(@RequestParam() Long gameId, @AuthenticationPrincipal User user) {
         String username = user.getUsername();
-        Game game = gameService.getGameById(id).orElseThrow(() -> new ObjectNotFoundException("Game with id " + id + " not found!"));
+        Game game = gameService.getGameById(gameId)
+                .orElseThrow(() -> new ObjectNotFoundException("Game with id " + gameId + " not found!"));
         gameKeyService.buy(game, username);
         return new ModelAndView("redirect:/home");
-
-
     }
 
 }

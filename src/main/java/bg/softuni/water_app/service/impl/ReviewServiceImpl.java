@@ -3,9 +3,9 @@ package bg.softuni.water_app.service.impl;
 import bg.softuni.water_app.model.dto.review.ReviewAddBindingModel;
 import bg.softuni.water_app.model.entity.Game;
 import bg.softuni.water_app.model.entity.Review;
-import bg.softuni.water_app.repo.GameRepository;
-import bg.softuni.water_app.repo.ReviewRepository;
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.GameRepository;
+import bg.softuni.water_app.repository.ReviewRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import bg.softuni.water_app.service.ReviewService;
 import org.springframework.stereotype.Service;
 
@@ -27,12 +27,12 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
-    public void add(ReviewAddBindingModel reviewAddBindingModel, String username, Long gameId) {
+    public void add(ReviewAddBindingModel reviewAddBindingModel, String username) {
         Review review = new Review();
         review.setReviewText(reviewAddBindingModel.getReviewText());
         review.setDateCreated(LocalDate.now());
         review.setReviewWriter(userRepository.findByUsername(username));
-        review.setReviewedGame(gameRepository.findGameById(gameId));
+        review.setReviewedGame(gameRepository.findGameById(reviewAddBindingModel.getGameId()));
         reviewRepository.save(review);
     }
 

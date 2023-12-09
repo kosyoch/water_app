@@ -1,15 +1,13 @@
 package bg.softuni.water_app.service.impl;
 
 import bg.softuni.water_app.model.dto.review.ReviewAddBindingModel;
-import bg.softuni.water_app.model.entity.Category;
 import bg.softuni.water_app.model.entity.Game;
 import bg.softuni.water_app.model.entity.Review;
 import bg.softuni.water_app.model.entity.User;
-import bg.softuni.water_app.model.entity.enums.CategoryName;
 import bg.softuni.water_app.model.entity.enums.UserRole;
-import bg.softuni.water_app.repo.GameRepository;
-import bg.softuni.water_app.repo.ReviewRepository;
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.GameRepository;
+import bg.softuni.water_app.repository.ReviewRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import bg.softuni.water_app.service.ReviewService;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -60,9 +58,10 @@ public class ReviewServiceImplTest {
         gameRepository.save(testGame(gameId));
 
         ReviewAddBindingModel testReviewAddBindingModel = new ReviewAddBindingModel();
+        testReviewAddBindingModel.setGameId(gameId);
         testReviewAddBindingModel.setReviewText("Test review text");
 
-        reviewServiceToTest.add(testReviewAddBindingModel, username, gameId);
+        reviewServiceToTest.add(testReviewAddBindingModel, username);
 
         Review savedReview = reviewRepository.findByReviewText("Test review text");
 

@@ -29,12 +29,12 @@ public class HomeController {
     }
 
     @GetMapping("/")
-    public ModelAndView index(){
+    public ModelAndView showIndexPage(){
         return new ModelAndView("index");
     }
 
     @GetMapping("/home")
-    public String home(@AuthenticationPrincipal User user, Model model){
+    public String showHomePage(@AuthenticationPrincipal User user, Model model){
         String username = user.getUsername();
         model.addAttribute("currentWallet", userService.getCurrentWallet(username));
         model.addAttribute("myGameKeys",gameKeyService.getMyGameKeys(username) );

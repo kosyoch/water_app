@@ -16,10 +16,10 @@
                     <span th:text="|*{reviewWriter.username}: *{reviewText}|" ></span>
                     <br>
                     <span th:text="|Written on: *{dateCreated}|" ></span>
-                    <a sec:authorize="hasRole('ADMIN')" class="ml-3 text-danger" th:href="@{/reviews/remove{id}(id = *{id})}">Remove</a>
+                    <a sec:authorize="hasRole('ADMIN')" class="ml-3 text-danger" th:href="@{/reviews/{id}/remove(id = *{id})}">Remove</a>
                 </div>
             </div>
-            <a sec:authorize="hasAnyRole('CUSTOMER')" th:href="@{/reviews/add/game{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Add review'"></a>
+            <a sec:authorize="hasAnyRole('CUSTOMER')" th:href="@{/reviews/add(gameId = *{game.getId()})}" class="btn btn-danger" th:text="'Add review'"></a>
         </div>
     </div>
     <a th:href="@{/games/{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Back to game'"></a>

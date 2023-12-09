@@ -1,6 +1,6 @@
 package bg.softuni.water_app.model.validation;
 
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

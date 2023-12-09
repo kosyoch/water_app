@@ -24,7 +24,7 @@
 <!--      </div>-->
 <!--    </div>-->
   <a th:if="${canBuyGame == false}" th:href="@{/games/{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Back to game'"></a>
-    <a th:if="${canBuyGame == true}" th:href="@{/games/buy/finalize{id}(id = *{game.getId()})}" class="btn btn-danger" th:text="'Finalize purchase'"></a>
+    <a th:if="${canBuyGame == true}" th:href="@{/game-keys/finalize(gameId = *{game.getId()})}" class="btn btn-danger" th:text="'Finalize purchase'"></a>
   <a th:href="@{/home}" class="btn btn-danger" th:text="'Back to home'"></a>
 <!--  </div>-->
 </main>

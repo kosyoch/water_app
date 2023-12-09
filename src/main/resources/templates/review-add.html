@@ -10,7 +10,7 @@
 
     <form class="mx-auto w-25 bg-blur rounded"
           th:method="POST"
-          th:action="@{/reviews/add/game{id}}"
+          th:action="@{/reviews/add}"
           th:object="${reviewAddBindingModel}">
 
         <div class="form-group">
@@ -21,6 +21,7 @@
                       th:errorclass="bg-danger"></textarea>
             <small th:if="${#fields.hasErrors('reviewText')}"
                    th:errors="*{reviewText}" class="text-danger">Review text error message</small>
+            <input type="hidden" th:field="*{gameId}">
         </div>
         <div class="button-holder d-flex justify-content-center">
             <button type="submit" class="btn btn-warning  mb-3" value="Register">Add review</button>

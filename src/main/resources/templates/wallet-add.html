@@ -17,12 +17,14 @@
             </div>
             <input type="number"  min="0" max="10000" step="any" class="form-control" id="moneyToAdd"
                    name="moneyToAdd"
+                   required
                    th:errorclass="bg-danger"/>
         </div>
 
         <div class="button-holder d-flex justify-content-center">
             <button type="submit" class="btn btn-warning  mb-3" value="Register">Add funds</button>
         </div>
+        <a th:href="@{/home}" class="btn btn-danger" th:text="'Back to home'"></a>
 
     </form>
 </main>

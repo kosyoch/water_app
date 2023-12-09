@@ -3,7 +3,7 @@ package bg.softuni.water_app.service.impl;
 import bg.softuni.water_app.model.dto.user.UserRegistrationDto;
 import bg.softuni.water_app.model.entity.User;
 import bg.softuni.water_app.model.entity.enums.UserRole;
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import bg.softuni.water_app.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -8,7 +8,7 @@ import java.time.LocalDate;
 import java.util.List;
 
 public interface ReviewService {
-    void add (ReviewAddBindingModel reviewAddBindingModel, String username, Long gameId);
+    void add (ReviewAddBindingModel reviewAddBindingModel, String username);
 
     void remove(Long id);
 

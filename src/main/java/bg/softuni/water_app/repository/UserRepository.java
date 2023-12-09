@@ -1,4 +1,4 @@
-package bg.softuni.water_app.repo;
+package bg.softuni.water_app.repository;
 
 import bg.softuni.water_app.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;

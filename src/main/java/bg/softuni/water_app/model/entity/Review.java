@@ -18,7 +18,7 @@ public class Review extends BaseEntity{
     @ManyToOne
     private User reviewWriter;
     @ManyToOne
-    @JoinColumn(name = "game-id")
+    @JoinColumn(name = "game_id")
     private Game reviewedGame;
 
     public String getReviewText() {

@@ -2,7 +2,7 @@ package bg.softuni.water_app.init;
 
 import bg.softuni.water_app.model.entity.Category;
 import bg.softuni.water_app.model.entity.enums.CategoryName;
-import bg.softuni.water_app.repo.CategoryRepository;
+import bg.softuni.water_app.repository.CategoryRepository;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 

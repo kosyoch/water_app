@@ -24,11 +24,18 @@ public class GameController {
     }
 
     @GetMapping("/add")
-    public ModelAndView add(@ModelAttribute("gameAddBindingModel")GameAddBindingModel gameAddBindingModel){
+    public ModelAndView showAddGamePage(@ModelAttribute("gameAddBindingModel")GameAddBindingModel gameAddBindingModel){
         return new ModelAndView("game-add");
     }
 
-    @PostMapping("/add")
+    @GetMapping("/{id}")
+    public String showGamePage (@PathVariable("id") Long id, Model model){
+        Game game = gameService.getGameById(id).orElseThrow(() -> new ObjectNotFoundException("Game with id " + id + " not found!"));
+        model.addAttribute("game", game);
+        return "game";
+    }
+
+    @PostMapping()
     public ModelAndView add(@AuthenticationPrincipal User user,
             @ModelAttribute("gameAddBindingModel") @Valid GameAddBindingModel gameAddBindingModel,
             BindingResult bindingResult){
@@ -38,21 +45,13 @@ public class GameController {
         }
         gameService.add(gameAddBindingModel, username);
         return new ModelAndView("redirect:/home");
-
     }
 
-    @GetMapping("/remove{id}")
+    @GetMapping("/{id}/remove")
     public ModelAndView remove (@PathVariable("id") Long id){
         Game game = gameService.getGameById(id).orElseThrow(() -> new ObjectNotFoundException("Game with id " + id + " not found!"));
         gameService.remove(game);
         return new ModelAndView("redirect:/home");
-    }
-
-    @GetMapping("/{id}")
-    public String gamePage (@PathVariable("id") Long id, Model model){
-        Game game = gameService.getGameById(id).orElseThrow(() -> new ObjectNotFoundException("Game with id " + id + " not found!"));
-        model.addAttribute("game", game);
-        return "game";
     }
 
 }

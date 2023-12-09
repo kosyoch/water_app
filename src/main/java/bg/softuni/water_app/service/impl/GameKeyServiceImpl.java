@@ -3,9 +3,9 @@ package bg.softuni.water_app.service.impl;
 import bg.softuni.water_app.model.entity.Game;
 import bg.softuni.water_app.model.entity.GameKey;
 import bg.softuni.water_app.model.entity.User;
-import bg.softuni.water_app.repo.GameKeyRepository;
-import bg.softuni.water_app.repo.GameRepository;
-import bg.softuni.water_app.repo.UserRepository;
+import bg.softuni.water_app.repository.GameKeyRepository;
+import bg.softuni.water_app.repository.GameRepository;
+import bg.softuni.water_app.repository.UserRepository;
 import bg.softuni.water_app.service.GameKeyService;
 import org.springframework.stereotype.Service;
 

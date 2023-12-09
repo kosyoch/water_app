@@ -20,6 +20,13 @@ public class Game extends BaseEntity {
 
     @ManyToOne
     private User developer;
+
+    @OneToMany(mappedBy = "reviewedGame", cascade = CascadeType.REMOVE)
+    private List<Review> reviews;
+
+    @OneToMany(mappedBy = "game", cascade = CascadeType.REMOVE)
+    private List<GameKey> gameKeys;
+
     @ManyToOne
     private Category category;
 
@@ -61,5 +68,13 @@ public class Game extends BaseEntity {
 
     public void setDeveloper(User developer) {
         this.developer = developer;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public List<GameKey> getGameKeys() {
+        return gameKeys;
     }
 }
