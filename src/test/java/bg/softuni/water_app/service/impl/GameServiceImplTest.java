@@ -61,7 +61,7 @@ public class GameServiceImplTest {
 
         gameServiceToTest.add(testGameAddBindingModel(categoryName), username);
 
-        Game savedGame = gameRepository.findByTitle("Test Game");
+        Game savedGame = gameRepository.findByTitle("Test Game").get();
         assertEquals("Test Game", savedGame.getTitle());
         assertEquals("Lorem ipsum", savedGame.getDescription());
         assertEquals(0, new BigDecimal(10).compareTo(savedGame.getPrice()));
